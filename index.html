@@ -6,60 +6,56 @@
     <title>Gold & Silver Rates in Bihar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .rate-card {
+            width: 280px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            border-radius: 15px;
+        }
+        .rate-card:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        .rate-card .card-body {
+            padding: 20px;
+        }
+        .rate-card h5 {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="container my-5">
-        <h1 class="text-center">Gold & Silver Rates in Bihar</h1>
+        <h1 class="text-center mb-4">Gold & Silver Rates in Bihar</h1>
 
         <!-- District Selection -->
-        <div class="mb-4">
+        <div class="mb-5">
             <label for="districtSelect" class="form-label"><strong>Select a District:</strong></label>
             <select id="districtSelect" class="form-select" onchange="fetchRates()">
                 <option value="">-- Select District --</option>
-                <!-- Districts will be populated dynamically -->
             </select>
         </div>
 
-        <!-- Gold Rates -->
-        <h2>Gold Rates</h2>
-        <table class="table table-bordered" id="goldTable">
-            <thead>
-                <tr>
-                    <th>City</th>
-                    <th>Date</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Gold rates will be displayed here -->
-            </tbody>
-        </table>
+        <!-- Gold Rate Cards -->
+        <h2 class="text-center mb-4">Gold Rates</h2>
+        <div class="card-container" id="goldCards"></div>
 
-        <!-- Silver Rates -->
-        <h2>Silver Rates</h2>
-        <table class="table table-bordered" id="silverTable">
-            <thead>
-                <tr>
-                    <th>City</th>
-                    <th>Date</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Silver rates will be displayed here -->
-            </tbody>
-        </table>
+        <!-- Silver Rate Cards -->
+        <h2 class="text-center mt-5 mb-4">Silver Rates</h2>
+        <div class="card-container" id="silverCards"></div>
     </div>
 
     <script>
-        // Fetch the data from the text file (rates_data.json) and populate the district select options
         fetch('rates_data.json')
             .then(response => response.json())
             .then(data => {
-                // Get the list of districts from the gold rates
                 const districts = Array.from(new Set(data.gold_rates.map(rate => rate.city)));
-
-                // Populate the select options
                 const districtSelect = document.getElementById('districtSelect');
                 districts.forEach(district => {
                     const option = document.createElement('option');
@@ -69,39 +65,42 @@
                 });
             });
 
-        // Fetch the rates for the selected district and display them
         function fetchRates() {
             const selectedDistrict = document.getElementById('districtSelect').value;
-            
-            // Fetch the data
+
             fetch('rates_data.json')
                 .then(response => response.json())
                 .then(data => {
                     const goldRates = data.gold_rates.filter(rate => rate.city === selectedDistrict);
                     const silverRates = data.silver_rates.filter(rate => rate.city === selectedDistrict);
 
-                    // Update the Gold Rates table
-                    const goldTableBody = document.getElementById('goldTable').getElementsByTagName('tbody')[0];
-                    goldTableBody.innerHTML = '';
+                    const goldCards = document.getElementById('goldCards');
+                    goldCards.innerHTML = '';
                     goldRates.forEach(rate => {
-                        const row = goldTableBody.insertRow();
-                        row.insertCell(0).textContent = rate.city;
-                        row.insertCell(1).textContent = rate.date;
-                        row.insertCell(2).textContent = rate.price;
+                        const card = `<div class="card rate-card">
+                            <div class="card-body">
+                                <h5 class="card-title">${rate.city}</h5>
+                                <p><strong>Date:</strong> ${rate.date}</p>
+                                <p><strong>Price:</strong> ${rate.price}</p>
+                            </div>
+                        </div>`;
+                        goldCards.innerHTML += card;
                     });
 
-                    // Update the Silver Rates table
-                    const silverTableBody = document.getElementById('silverTable').getElementsByTagName('tbody')[0];
-                    silverTableBody.innerHTML = '';
+                    const silverCards = document.getElementById('silverCards');
+                    silverCards.innerHTML = '';
                     silverRates.forEach(rate => {
-                        const row = silverTableBody.insertRow();
-                        row.insertCell(0).textContent = rate.city;
-                        row.insertCell(1).textContent = rate.date;
-                        row.insertCell(2).textContent = rate.price;
+                        const card = `<div class="card rate-card">
+                            <div class="card-body">
+                                <h5 class="card-title">${rate.city}</h5>
+                                <p><strong>Date:</strong> ${rate.date}</p>
+                                <p><strong>Price:</strong> ${rate.price}</p>
+                            </div>
+                        </div>`;
+                        silverCards.innerHTML += card;
                     });
                 });
         }
     </script>
-
 </body>
 </html>

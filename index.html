@@ -56,6 +56,60 @@
             .then(response => response.json())
             .then(data => {
                 const districts = Array.from(new Set(data.gold_rates.map(rate => rate.city)));
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center">Gold & Silver Rates in Bihar</h1>
+
+        <!-- District Selection -->
+        <div class="mb-4">
+            <label for="districtSelect" class="form-label"><strong>Select a District:</strong></label>
+            <select id="districtSelect" class="form-select" onchange="fetchRates()">
+                <option value="">-- Select District --</option>
+                <!-- Districts will be populated dynamically -->
+            </select>
+        </div>
+
+        <!-- Gold Rates -->
+        <h2>Gold Rates</h2>
+        <table class="table table-bordered" id="goldTable">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Gold rates will be displayed here -->
+            </tbody>
+        </table>
+
+        <!-- Silver Rates -->
+        <h2>Silver Rates</h2>
+        <table class="table table-bordered" id="silverTable">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Silver rates will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch the data from the text file (rates_data.json) and populate the district select options
+        fetch('rates_data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Get the list of districts from the gold rates
+                const districts = Array.from(new Set(data.gold_rates.map(rate => rate.city)));
+
+                // Populate the select options
                 const districtSelect = document.getElementById('districtSelect');
                 districts.forEach(district => {
                     const option = document.createElement('option');
@@ -64,16 +118,17 @@
                     districtSelect.appendChild(option);
                 });
             });
-
+        // Fetch the rates for the selected district and display them
         function fetchRates() {
             const selectedDistrict = document.getElementById('districtSelect').value;
-
+            
+            // Fetch the data
             fetch('rates_data.json')
                 .then(response => response.json())
                 .then(data => {
                     const goldRates = data.gold_rates.filter(rate => rate.city === selectedDistrict);
                     const silverRates = data.silver_rates.filter(rate => rate.city === selectedDistrict);
-
+              
                     const goldCards = document.getElementById('goldCards');
                     goldCards.innerHTML = '';
                     goldRates.forEach(rate => {

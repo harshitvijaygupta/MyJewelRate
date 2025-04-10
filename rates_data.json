@@ -1,0 +1,57 @@
+{
+    "gold_rates": [
+        {
+            "city": "Patna",
+            "date": "2025-04-10",
+            "price": 89650,
+            "purity": "24K"
+        },
+        {
+            "city": "Patna",
+            "date": "2025-04-10",
+            "price": 86890,
+            "purity": "22K"
+        },
+        {
+            "city": "Gaya",
+            "date": "2025-04-10",
+            "price": 89650,
+            "purity": "24K"
+        },
+        {
+            "city": "Gaya",
+            "date": "2025-04-10",
+            "price": 86890,
+            "purity": "22K"
+        },
+        {
+            "city": "Bhagalpur",
+            "date": "2025-04-10",
+            "price": 89500,
+            "purity": "24K"
+        },
+        {
+            "city": "Bhagalpur",
+            "date": "2025-04-10",
+            "price": 86740,
+            "purity": "22K"
+        }
+    ],
+    "silver_rates": [
+        {
+            "city": "Patna",
+            "date": "2025-04-10",
+            "price": 91720
+        },
+        {
+            "city": "Gaya",
+            "date": "2025-04-10",
+            "price": 91720
+        },
+        {
+            "city": "Bhagalpur",
+            "date": "2025-04-10",
+            "price": 91500
+        }
+    ]
+}
